@@ -11,6 +11,7 @@ import collectionRoutes from './api/v1/routes/collection.routes';
 import paymentRoutes from './api/v1/routes/payment.routes';
 import predictionRoutes from './api/v1/routes/prediction.routes';
 import farmerRoutes from './api/v1/routes/farmer.routes';
+import factoryRoutes from './api/v1/routes/factory.routes';
 
 // Middleware
 import errorMiddleware from './api/v1/middlewares/error.middleware';
@@ -24,13 +25,10 @@ const app = express();
 app.use(helmet());
 app.use(cors({
   origin: (origin, callback) => {
-    // Allow requests with no origin (e.g. mobile apps, curl)
     if (!origin) return callback(null, true);
-    // In development, allow any localhost port
     if (process.env.NODE_ENV !== 'production' && /^http:\/\/localhost:\d+$/.test(origin)) {
       return callback(null, true);
     }
-    // In production, use CLIENT_URL
     const allowed = process.env.CLIENT_URL || 'http://localhost:3000';
     if (origin === allowed) return callback(null, true);
     callback(new Error(`CORS: origin ${origin} not allowed`));
@@ -64,6 +62,7 @@ app.use('/api/v1/collections', collectionRoutes);
 app.use('/api/v1/payments', paymentRoutes);
 app.use('/api/v1/predictions', predictionRoutes);
 app.use('/api/v1/farmers', farmerRoutes);
+app.use('/api/v1/factory', factoryRoutes);
 
 // 404 handler
 app.use('*', (req, res) => {
