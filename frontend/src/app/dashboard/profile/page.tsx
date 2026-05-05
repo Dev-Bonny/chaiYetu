@@ -733,13 +733,13 @@ export default function ProfilePage() {
                             <Package
                               key={star}
                               size={16}
-                              className={`${star <= Math.round(stats.averageQuality) ? 'text-yellow-500' : 'text-gray-300'} ${star > 1 ? 'ml-1' : ''}`}
+                              className={`${star <= Math.round(stats.averageQuality || 0) ? 'text-yellow-500' : 'text-gray-300'} ${star > 1 ? 'ml-1' : ''}`}
                             />
                           ))}
                         </div>
                         <span className="text-sm text-gray-500">Average</span>
                       </div>
-                      <p className="text-3xl font-bold">{stats.averageQuality.toFixed(1)}</p>
+                      <p className="text-3xl font-bold">{(stats.averageQuality || 0).toFixed(1)}</p>
                       <p className="text-sm text-gray-600 mt-1">Quality Score</p>
                     </div>
                     
@@ -748,7 +748,7 @@ export default function ProfilePage() {
                         <Calendar className="text-purple-500" size={24} />
                         <span className="text-sm text-gray-500">Per Week</span>
                       </div>
-                      <p className="text-3xl font-bold">{stats.collectionFrequency.toFixed(1)}</p>
+                      <p className="text-3xl font-bold">{(stats.collectionFrequency || 0).toFixed(1)}</p>
                       <p className="text-sm text-gray-600 mt-1">Collection Frequency</p>
                     </div>
                   </div>

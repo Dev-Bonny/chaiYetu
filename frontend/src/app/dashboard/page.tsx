@@ -4,6 +4,7 @@ import { useAuth } from '@/lib/auth-context'
 import FarmerDashboard from '@/components/dashboard/FarmerDashboard'
 import CollectorDashboard from '@/components/dashboard/CollectorDashboard'
 import AdminDashboard from '@/components/dashboard/AdminDashboard'
+import FactoryDashboard from '@/components/factory/FactoryDashboard'
 
 export default function DashboardPage() {
   const { user } = useAuth()
@@ -14,8 +15,9 @@ export default function DashboardPage() {
         return <FarmerDashboard />
       case 'collector':
         return <CollectorDashboard />
-      case 'admin':
       case 'factory_manager':
+        return <FactoryDashboard />
+      case 'admin':
         return <AdminDashboard />
       default:
         return (
