@@ -1,0 +1,24 @@
+{"level":"info","message":"VAPID keys initialized successfully","service":"chaiyetu-backend","timestamp":"2026-06-08T07:05:51.325Z"}
+{"level":"info","message":"✅ Push notifications enabled with VAPID","service":"chaiyetu-backend","timestamp":"2026-06-08T07:05:51.370Z"}
+{"level":"info","message":"📧 Email notifications enabled","service":"chaiyetu-backend","timestamp":"2026-06-08T07:05:51.399Z"}
+{"level":"info","message":"📱 SMS notifications enabled","service":"chaiyetu-backend","timestamp":"2026-06-08T07:05:51.424Z"}
+{"level":"info","message":"MongoDB Connected: ac-zs7wyj5-shard-00-00.dhhnvjn.mongodb.net","service":"chaiyetu-backend","timestamp":"2026-06-08T07:06:01.114Z"}
+{"level":"info","message":"Server running in development mode on port 5000","service":"chaiyetu-backend","timestamp":"2026-06-08T07:06:01.146Z"}
+{"level":"info","message":"WebSocket server ready on port 5000","service":"chaiyetu-backend","timestamp":"2026-06-08T07:06:01.152Z"}
+{"level":"warn","message":"MongoDB disconnected","service":"chaiyetu-backend","timestamp":"2026-06-08T07:09:58.480Z"}
+{"level":"info","message":"User kangangiboniface2021@gmail.com logged in successfully","service":"chaiyetu-backend","timestamp":"2026-06-08T07:10:01.520Z"}
+{"level":"warn","message":"MongoDB disconnected","service":"chaiyetu-backend","timestamp":"2026-06-08T07:12:35.807Z"}
+{"level":"warn","message":"MongoDB disconnected","service":"chaiyetu-backend","timestamp":"2026-06-08T07:19:02.568Z"}
+{"level":"warn","message":"MongoDB disconnected","service":"chaiyetu-backend","timestamp":"2026-06-08T07:21:26.318Z"}
+{"level":"warn","message":"MongoDB disconnected","service":"chaiyetu-backend","timestamp":"2026-06-08T07:22:46.115Z"}
+{"level":"warn","message":"MongoDB disconnected","service":"chaiyetu-backend","timestamp":"2026-06-08T07:26:06.925Z"}
+{"level":"warn","message":"MongoDB disconnected","service":"chaiyetu-backend","timestamp":"2026-06-08T07:29:12.505Z"}
+{"level":"warn","message":"MongoDB disconnected","service":"chaiyetu-backend","timestamp":"2026-06-08T07:32:03.490Z"}
+{"level":"info","message":"User kangangiboniface2021@gmail.com logged in successfully","service":"chaiyetu-backend","timestamp":"2026-06-08T07:32:07.381Z"}
+{"level":"warn","message":"MongoDB disconnected","service":"chaiyetu-backend","timestamp":"2026-06-08T07:32:58.399Z"}
+{"level":"warn","message":"MongoDB disconnected","service":"chaiyetu-backend","timestamp":"2026-06-08T07:37:45.976Z"}
+{"level":"warn","message":"MongoDB disconnected","service":"chaiyetu-backend","timestamp":"2026-06-08T07:42:58.495Z"}
+{"level":"info","message":"[EMAIL] Would send to kigothogeorge@gmail.com: Collection Recorded","service":"chaiyetu-backend","timestamp":"2026-06-08T07:43:03.282Z"}
+{"level":"info","message":"📨 Notification created for user 6a266b6ad3dc6dab5bc2dc4c: Collection Recorded","service":"chaiyetu-backend","timestamp":"2026-06-08T07:43:03.849Z"}
+{"level":"warn","message":"MongoDB disconnected","service":"chaiyetu-backend","timestamp":"2026-06-08T08:37:16.259Z"}
+{"level":"info","message":"Received SIGINT, shutting down gracefully","service":"chaiyetu-backend","timestamp":"2026-06-08T09:08:32.644Z"}

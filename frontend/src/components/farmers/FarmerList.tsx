@@ -157,8 +157,12 @@ export default function FarmerList({
     setError(null)
 
     try {
-      const response = await apiClient.get(endpoint, { params: { limit } })
-      setFarmers(response.farmers || [])
+      const separator = endpoint.includes('?') ? '&' : '?'
+      const fetchUrl = `${endpoint}${separator}limit=${limit}`
+      const response = await apiClient.get(fetchUrl)
+      
+      const fetchedFarmers = response.data?.farmers || response.farmers || []
+      setFarmers(fetchedFarmers)
     } catch (err: any) {
       console.error('Failed to fetch farmers:', err)
       setError('Failed to load farmers')
@@ -868,7 +872,7 @@ export default function FarmerList({
                         <Users className="text-gray-400" size={14} />
                         <div>
                           <p className="text-sm font-medium">
-                            {farmer.collector.user.firstName} {farmer.collector.user.lastName}
+                            {farmer.collector.user?.firstName} {farmer.collector.user?.lastName}
                           </p>
                           <p className="text-xs text-gray-500">Assigned Collector</p>
                         </div>
