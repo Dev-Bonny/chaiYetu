@@ -31,22 +31,23 @@ export class WeatherService {
   }
 
   async updateWeatherForFarmer(farmerId: string, weatherData: any): Promise<IWeather> {
-    // Find existing weather record for today
     const today = new Date();
     today.setHours(0, 0, 0, 0);
-    
+
     const tomorrow = new Date(today);
     tomorrow.setDate(tomorrow.getDate() + 1);
-    
+
     const existing = await Weather.findOne({
       farmer: farmerId,
       date: { $gte: today, $lt: tomorrow },
     });
-    
+
     if (existing) {
-      return await Weather.findByIdAndUpdate(existing._id, weatherData, { new: true });
+      // FIX: assert non-null since we know the document exists
+      const updated = await Weather.findByIdAndUpdate(existing._id, weatherData, { new: true });
+      return updated as IWeather;
     }
-    
+
     return await this.createWeatherRecord({
       ...weatherData,
       farmer: farmerId,
@@ -57,20 +58,20 @@ export class WeatherService {
   async getWeatherAlerts(location: { county: string; subCounty: string }): Promise<any[]> {
     const today = new Date();
     today.setHours(0, 0, 0, 0);
-    
+
     const weatherData = await Weather.findOne({
       'location.county': location.county,
       'location.subCounty': location.subCounty,
       date: { $gte: today },
       isForecast: false,
     }).sort({ date: -1 });
-    
+
     return weatherData?.getAlerts() || [];
   }
 
   async getWeatherForecast(location: { lat: number; lng: number }, days: number = 7): Promise<any[]> {
     const weatherData = await this.fetchWeatherData(location.lat, location.lng);
-    
+
     const forecasts = weatherData.daily.slice(0, days).map((day: any) => ({
       date: new Date(day.dt * 1000),
       temperature: {
@@ -83,7 +84,7 @@ export class WeatherService {
         humidity: day.humidity,
       },
       wind: {
-        speed: Math.round(day.wind_speed * 3.6), // Convert m/s to km/h
+        speed: Math.round(day.wind_speed * 3.6),
         direction: day.wind_deg,
       },
       clouds: {
@@ -91,52 +92,58 @@ export class WeatherService {
       },
       conditions: this.calculateRiskFactors(day),
       isForecast: true,
-      forecastAccuracy: 0.85, // Estimated accuracy
+      forecastAccuracy: 0.85,
       source: 'api',
     }));
-    
+
     return forecasts;
   }
 
-  private calculateRiskFactors(weatherData: any): any {
-    const risks = {
-      droughtRisk: 'low' as const,
-      frostRisk: 'none' as const,
-      floodRisk: 'none' as const,
-      hailRisk: 'none' as const,
-      windDamageRisk: 'none' as const,
-    };
-    
-    // Drought risk based on lack of rain and high temp
+  private calculateRiskFactors(weatherData: any): {
+    droughtRisk: 'low' | 'medium' | 'high' | 'extreme';
+    frostRisk: 'none' | 'low' | 'medium' | 'high';
+    floodRisk: 'none' | 'low' | 'medium' | 'high';
+    hailRisk: 'none' | 'low' | 'medium' | 'high';
+    windDamageRisk: 'none' | 'low' | 'medium' | 'high';
+  } {
+    // FIX: declare with explicit union types instead of `as const`
+    // so values can be reassigned freely within the union
+    let droughtRisk:    'low' | 'medium' | 'high' | 'extreme'  = 'low';
+    let frostRisk:      'none' | 'low' | 'medium' | 'high'     = 'none';
+    let floodRisk:      'none' | 'low' | 'medium' | 'high'     = 'none';
+    let hailRisk:       'none' | 'low' | 'medium' | 'high'     = 'none';
+    let windDamageRisk: 'none' | 'low' | 'medium' | 'high'     = 'none';
+
+    // Drought risk
     if ((weatherData.rain || 0) < 1 && weatherData.temp.max > 25) {
-      risks.droughtRisk = 'medium';
+      droughtRisk = 'medium';
     }
     if ((weatherData.rain || 0) < 1 && weatherData.temp.max > 30) {
-      risks.droughtRisk = 'high';
+      droughtRisk = 'high';
     }
-    
+
     // Frost risk
     if (weatherData.temp.min < 5) {
-      risks.frostRisk = 'high';
+      frostRisk = 'high';
     } else if (weatherData.temp.min < 10) {
-      risks.frostRisk = 'low';
+      frostRisk = 'low';
     }
-    
+
     // Flood risk
     if ((weatherData.rain || 0) > 20) {
-      risks.floodRisk = 'high';
+      floodRisk = 'high';
     } else if ((weatherData.rain || 0) > 10) {
-      risks.floodRisk = 'medium';
+      floodRisk = 'medium';
     }
-    
+
     // Wind damage risk
-    if ((weatherData.wind_speed * 3.6) > 30) { // Convert m/s to km/h
-      risks.windDamageRisk = 'high';
+    if ((weatherData.wind_speed * 3.6) > 30) {
+      windDamageRisk = 'high';
     } else if ((weatherData.wind_speed * 3.6) > 20) {
-      risks.windDamageRisk = 'medium';
+      windDamageRisk = 'medium';
     }
-    
-    return risks;
+
+    return { droughtRisk, frostRisk, floodRisk, hailRisk, windDamageRisk };
   }
 }
 
